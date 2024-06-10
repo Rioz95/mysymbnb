@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			Connexion Administration
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/app.css">
+		<link rel="stylesheet" href="/css/bootstrap-datepicker.css">
+		<link rel="stylesheet" href="/css/all.min.css">
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				height: 100vh;
+			}
+
+			.card {
+				margin-top: 10%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="col-md-4">
+			<div class="card bg-light text-center">
+				<div class="card-header">
+					<h4 class="card-title">
+						<i class="fas fa-lock"></i>
+						Connexion Administration
+					</h4>
+				</div>
+				<div class="card-body">
+					{% if hasError %}
+						<div class="alert alert-warning">
+							<p>
+								<i class="fas fa-exclamation-triangle"></i>
+								&nbsp; Nom d'utilisateur ou mot de passe invalide</p>
+						</div>
+					{% endif %}
+					<form action="" method="POST">
+						<div class="form-group">
+							<label for="_username">Adresse E-mail</label>
+							<input type="text" class="form-control" id="_username" placeholder="jhondoe@example.com" name="_username" value="{{username}}">
+						</div>
+
+						<label style="display: block; margin-bottom: 1rem;">
+							<span>Mot de passe</span>
+							<div class="passwd-wrap">
+								<input type="password" name="_password" id="password" placeholder="Entrer votre mot de passe..."/>
+								<button type="button" id="show-passwd">
+									<img src="/images/users/eye_closed.svg" alt="Show Password"/>
+								</button>
+							</div>
+						</label>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary">
+								<i class="fas fa-lock-open"></i>
+								Se Connecter
+							</button>
+							<br>
+							<a href="{{ path('homepage') }}" class="btn btn-link mt-2">
+								<i class="fas fa-arrow-circle-left"></i>Retour vers le site</a>
+						</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/popper.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/all.min.js"></script>
+		<script src="/js/bootstrap-datepicker.js"></script>
+
+		<script>
+			const show_pw_btn = document.querySelector('#show-passwd')
+const show_pw_icon = show_pw_btn.querySelector('img')
+const pw_input = document.querySelector('#password')
+
+show_pw_btn.addEventListener('click', () => {
+pw_input.type = pw_input.type === 'password' ? 'text' : 'password'
+
+show_pw_icon.src = show_pw_icon.src.includes('open') ? "/images/users/eye_closed.svg" : '/images/users/eye_open.svg'
+})
+		</script>
+	</body>
+</html>

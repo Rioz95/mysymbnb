@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gerer mon profil
+{% endblock %}
+
+
+{% block body %}
+
+	<div class="container">
+		<h1 class="text-center">Gerer mon profil
+		</h1>
+		{{ form_start(form) }}
+		<div class="row">
+			<div class="col-md-8">
+				{{ form_row(form.firstName) }}
+				{{ form_row(form.lastName) }}
+				{{ form_row(form.email) }}
+				{{ form_row(form.introduction) }}
+				{{ form_row(form.description) }}
+
+
+				<input type="hidden" name="" id="widgets-counter" value="0">
+
+			</div>
+
+			<div class=" col-md-4">
+				<div>
+					<img src="{{asset("images/users/" ~ form.picture.vars.value)}}" alt="" id="imageAffichee" class="ronded mx-auto img-thumbnail" style="display: block">
+				</div>
+				<div>
+					{{ form_row(form.imageFile,{'id':'imageFile'}) }}
+					{{ form_errors(form.imageFile) }}
+					<a class="btn btn-primary center" style="display: block;" id="ajoutimage">
+						<i class="fas fa-upload"></i>
+						Ajouter une image qui donne vraiment envie pour votre couverture
+					</a>
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-success my-3">Confirmer les modfifications</button>
+
+		{{ form_end(form) }}
+
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{asset("js/gestionUpload.js")}}" defer></script>
+
+	<script src="/js/ad.js"></script>
+{% endblock %}

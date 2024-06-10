@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Réseration numéro
+	{{booking.id}}
+{% endblock %}
+
+
+{% block body %}
+
+	{% set ad = booking.ad %}
+	{% set author = ad.author %}
+	<div class="container">
+		<h1 class="text-center my-5">Votre réservation (n°{{booking.id}})</h1>
+
+		{% if app.request.query.get('withAlert') %}
+			<div class="alert alert-success">
+				<h4 class="alert-heading">Bravo !</h4>
+				<p>Votre réservation auprès de
+					<strong>
+						<a href="{{path('user_show', {'slug': author.slug})}}">{{author.fullName}}</a>
+					</strong>
+					pour l'annnce
+					<strong>
+						<a href="{{path('ads_show', {'slug': ad.slug})}}">{{ad.title}}</a>
+					</strong>
+					a été bien priseencompte !
+				</p>
+			</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col">
+				<div class="alert alert-light">
+					<h2 class="text-center">Détails</h2>
+					<dl class="row">
+						<dt class="col-md-4">Numéro</dt>
+						<dd class="col-md-8">{{booking.id}}</dd>
+						<dt class="col-md-4">Date d'arrivée</dt>
+						<dd class="col-md-8">{{booking.startDate | date('d/m/Y')}}</dd>
+						<dt class="col-md-4">Date de départ</dt>
+						<dd class="col-md-8">{{booking.endDate | date('d/m/Y')}}</dd>
+						<dt class="col-md-4">Nombre de nuit</dt>
+						<dd class="col-md-8">{{booking.duration}}</dd>
+						<dt class="col-md-4">Montant Total</dt>
+						<dd class="col-md-8">{{booking.amount | number_format(2, ',', ' ')}}
+							&euro;</dd>
+						<dt class="col-md-4">Commentaire</dt>
+						<dd class="col-md-8">{{booking.comment | default('Aucun commentaire')}}</dd>
+					</dl>
+
+					<hr>
+
+					<h2 class="alert-heading">Votre hôte</h2>
+					<div class="row">
+						<div class="col-3 mb-3">
+							<img src="{{ asset('images/users/' ~ author.picture) }}" alt="Avatar de {{author.fullName}}" class="avatar avatar-medium">
+						</div>
+						<div class="col">
+							<h4>
+								<a href="{{path('user_show', {'slug': author.slug})}}" style="text-decoration: none;">{{author.fullName}}</a>
+							</h4>
+							<span>{{author.ads|length}}
+								annonce(s)</span>
+						</div>
+					</div>
+					{{author.description | raw}}
+
+					<a href="{{path('user_show', {'slug': author.slug})}}" style="text-decoration: none; color:white;" class="btn btn-primary">Plus d'info sur
+						{{author.firstName}}
+					</a>
+				</div>
+				<div class="alert alert-light" id="comment">
+					<h2 class="heading">Votre avis compte !</h2>
+					{% if date() > date(booking.endDate) %}
+						{% set comment = booking.ad.commentFromAuthor(app.user) %}
+						{% if comment is not null %}
+							<blockquote>
+								{{ comment.content }}
+							</blockquote>
+							<strong>
+								Note :
+								{% include 'partials/rating.html.twig' with {'rating': comment.rating} %}
+							</strong>
+						{% else %}
+							{{form_start(form)}}
+							{{form_widget(form)}}
+							<button class="btn btn-success">Comfirmer!</button>
+							{{form_end(form)}}
+						{% endif %}
+					{% else %}
+						<p>Vous ne pourrez pas notée cette annonce tant que votre votre voyage ne sera pas complet</p>
+					{% endif %}
+
+				</div>
+			</div>
+			<div class="col">
+				<div class="alert alert-light">
+					<h2 class="text-center alert-heading">Votre hébèrgement</h2>
+
+					<h4>
+						<a href="{{path('ads_show', {'slug': ad.slug})}}" class="" style="text-decoration: none; text-aligne:center;">{{ad.title}}</a>
+					</h4>
+					<img src="{{ asset('images/annonce/' ~ ad.coverImage) }}" class="img-fluid" alt="Image de l'appartement {{ad.title}}">
+					{{ad.content|raw}}
+					<br>
+					<a href="{{path('ads_show', {'slug': ad.slug})}}" class="btn btn-primary" style="text-decoration: none; color:white;">Plus d'information</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

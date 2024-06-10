@@ -1,0 +1,58 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admnisstration des annonces
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<h1 class="my-5 text-center">
+			Gestion des annonces
+		</h1>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Titre</th>
+					<th>Auteur</th>
+					<th class="text-center">Réservations</th>
+					<th class="text-center">Note</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ad in pagination.data %}
+					<tr>
+						<td>{{ad.id}}</td>
+						<td>{{ad.title}}</td>
+						<td>
+							<img src="{{ asset('images/users/' ~ ad.author.picture) }}" alt="Avatar de {{ad.author.fullName}}" class="avatar avatar-micro">
+							{{ad.author.fullName}}
+						</td>
+						<td class="text-center">
+							<span class="rounded">{{ad.bookings|length}}</span>
+						</td>
+						<td class="text-center">
+							<span class="rounded">{{ad.avgRatings | number_format(1, ',', ' ')}}</span>
+						</td>
+						<td>
+							<a href="{{path('admin_ads_edit', {'id': ad.id})}}" class="btn btn-primary">
+								<i class="fas fa-edit"></i>
+							</a>
+							<a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalSimple" data-titre="Suppression de l'annonce: {{ad.title}}" data-message="Ete vous sur de supprimer l'annonce {{ad.title}}" data-libelleboutton="Supprimer l'annonce" data-lien="{{path('admin_ads_delete', {'id': ad.id})}}">
+								<i class="fas fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{# Pagination #}
+		{{pagination.display()}}
+	</div>
+{% endblock %}
+
+
+{% block javascripts %}
+	{% include "include/_modal.html.twig" %}
+{% endblock %}

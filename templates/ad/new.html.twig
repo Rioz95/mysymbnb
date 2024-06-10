@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition d'une annonce
+{% endblock %}
+
+{% form_theme form 'ad/_collection.html.twig' %}
+
+{% block body %}
+
+	<div class="container">
+		<h1>Créer une nouvelle annonce
+		</h1>
+		{{ form_start(form) }}
+		<div class="row">
+			<div class="col-md-8">
+				{{ form_row(form.title) }}
+				{{ form_row(form.slug) }}
+				{{ form_row(form.introduction) }}
+				{{ form_row(form.content) }}
+				{{ form_row(form.rooms) }}
+				{{ form_row(form.price) }}
+				{{ form_row(form.images) }}
+
+
+				<input type="hidden" name="" id="widgets-counter" value="0">
+
+			</div>
+
+			<div class=" col-md-4">
+				<div>
+					<img src="{{asset("images/annonce/" ~ form.coverImage.vars.value)}}" alt="" id="imageAffichee" class="ronded mx-auto img-thumbnail" style="display: block">
+				</div>
+				<div>
+					{{ form_row(form.imageFile,{'id':'imageFile'}) }}
+					{{ form_errors(form.imageFile) }}
+					<a class="btn btn-primary center" style="display: block;" id="ajoutimage">
+						<i class="fas fa-upload"></i>
+						Ajouter une image qui donne vraiment envie pour votre couverture
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<button type="boutton" id="add-image" class="btn btn-primary my-4">Ajouter une image</button>
+		</div>
+		<button type="submit" class="btn btn-primary">Confirmer l'enregistrement</button>
+
+		{{ form_end(form) }}
+
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{asset("js/gestionUpload.js")}}" defer></script>
+
+	<script src="/js/ad.js"></script>
+{% endblock %}

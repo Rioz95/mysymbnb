@@ -1,0 +1,150 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modification l'annonce numéro
+	{{ad.id}}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+	<div class="container clearfix">
+		<h1 class="text-center my-5">
+			Modification l'annonce numéro:
+			{{ ad.id }}
+		</h1>
+		{{ form_start(form) }}
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card bg-light">
+					<div class="card-header bg-secondary">
+						<h4 class="card-title text-center">Modifier l'annonce ?</h4>
+					</div>
+					<div class="card-body">
+						{{ form_row(form.title) }}
+						{{ form_row(form.slug) }}
+						{{ form_row(form.introduction) }}
+						{{ form_row(form.content) }}
+						{{ form_row(form.rooms) }}
+						{{ form_row(form.price) }}
+						{{ form_row(form.images) }}
+
+
+						<div>
+							<img src="{{asset("images/annonce/" ~ form.coverImage.vars.value)}}" alt="" id="imageAffichee" class="ronded mx-auto img-thumbnail" style="display: block">
+						</div>
+						<div>
+							{{ form_row(form.imageFile,{'id':'imageFile'}) }}
+							{{ form_errors(form.imageFile) }}
+							<a class="btn btn-primary center" style="display: block;" id="ajoutimage">
+								<i class="fas fa-upload"></i>
+								Ajouter une image qui donne vraiment envie pour votre couverture
+							</a>
+						</div>
+
+						<button type="submit" class="btn btn-primary my-3">Enregistrer les modifications</button>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="col-md-6">
+				<div class="card bg-light">
+					<div class="card-header bg-secondary">
+						<h4 class="card-title text-center">Les réservations</h4>
+					</div>
+					<div class="card-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Voyageur</th>
+									<th>Date de réservation</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for booking in ad.bookings %}
+									<tr>
+										<td class="align-middle">{{ booking.id }}</td>
+										<td class="align-middle">{{ booking.booker.fullName }}</td>
+										<td class="align-middle">{{ booking.createdAt | date('d/m/Y H:i') }}</td>
+										<td class="align-middle">
+											<a href="#" class="btn btn-primary">
+												<i class="fas fa-pen"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card bg-light mt-5">
+					<div class="card-header bg-secondary">
+						<h4 class="card-title text-center">Commentaires</h4>
+					</div>
+					<div class="card-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Voyageur</th>
+									<th class="text-center">Note</th>
+									<th>Commentaire</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for comment in ad.comments %}
+									<tr>
+										<td class="align-middle text-center">{{ comment.id }}</td>
+										<td class="align-middle">{{ comment.author.fullName }}</td>
+										<td class="align-middle text-center">{{ comment.rating }}</td>
+										<td class="align-middle">{{ comment.content }}</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		{{ form_end(form) }}
+	{% endblock %}
+	{% block javascripts %}
+		<script src="{{asset("js/gestionUpload.js")}}" defer></script>
+		<script>
+			$(document).ready(function () {
+$('[data-action="delete"]').on('click', function () {
+const target = this.dataset.target;
+$(target).remove();
+// const target = this.data('target');
+})
+})
+		</script>
+	{% endblock %}
+
+	{% block _ad_images_widget %}
+		{{form_widget(form)}}
+	{% endblock %}
+
+	{% block _ad_images_entry_row %}
+		<div id="block_{{id}}">
+			{{form_widget(form)}}
+		</div>
+	{% endblock %}
+
+	{% block _ad_images_entry_widget %}
+		<div class="row align-items-center mb-5">
+			<div class="col-4">
+				{{form_row(form.url)}}
+			</div>
+			<div class="col-6">
+				{{form_row(form.caption)}}
+			</div>
+			<div class="col">
+				<button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">
+					<i class="fas fa-trash"></i>
+				</button>
+			</div>
+		</div>
+	{% endblock %}

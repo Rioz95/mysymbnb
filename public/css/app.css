@@ -1,0 +1,151 @@
+div.container,
+div.container-fluid {
+    margin-top: 20px;
+}
+
+div.ad-title {
+    padding: 2em;
+    background-size: cover;
+    background-position: center center;
+}
+
+div.ad-title h1,
+div.ad-title p {
+    color: white;
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+}
+
+
+div.ad-title .btn {
+    margin-top: 2em;
+    font-size: 1.5em;
+    line-height: 1.5em;
+}
+
+
+div.carousel-caption {
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+
+}
+
+.ad-title {
+    /* Spécifie l'image de fond avec son chemin */
+    background-image: url('{{{../images/annonce/{{ ad.coverImage }}}}}');
+
+    /* Taille et position de l'image de fond */
+    background-size: cover;
+    /* background-position: center; */
+
+    /* Autres styles */
+}
+
+.avatar {
+    max-width: 128px;
+    max-height: 128px;
+    border-radius: 50%;
+}
+
+.avatar-medium {
+    max-width: 64px;
+    max-height: 64px;
+}
+
+.avatar-mini {
+    max-width: 32px;
+    max-height: 32px;
+
+}
+
+.avatar-micro {
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+    color: firebrick !important;
+}
+
+span.rating i {
+    color: goldenrod;
+}
+
+div.card .bg-light:hover {
+    transform: scale(1.075);
+}
+
+/* #password {
+    outline: none;
+    border: none;
+    border-radius: 25px;
+    min-width: 500px;
+    box-shadow: 0 0 10px #000;
+    margin-top: 10px;
+
+}
+
+#eye {
+    position: absolute;
+    top: 39.5%;
+    right: 670px;
+    transform: translateY(-90%);
+    cursor: pointer;
+    font-size: 1.3rem;
+} */
+
+label span {
+    display: block;
+    color: #aaa;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    transition: 0.3s ease-out;
+}
+
+label:focus-within span {
+    color: #2b2d2f;
+}
+
+
+input[type="text"],
+input[type="password"],
+button {
+    appearance: none;
+    outline: none;
+    border: none;
+    background: none;
+}
+
+input[type="text"],
+input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #bbb;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease-out;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #2b2d2f;
+}
+
+.passwd-wrap {
+    position: relative;
+}
+
+#show-passwd {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+#show-passwd img {
+    width: 100%;
+    height: auto;
+}
