@@ -4,9 +4,12 @@ namespace App\Form;
 
 use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Image as ConstraintsImage;
 
 class ImageType extends AbstractType
 {
@@ -16,7 +19,7 @@ class ImageType extends AbstractType
             ->add('url', TextType::class, [
                 'label' => 'Url de l\'image',
                 'attr' => [
-                    'placeholder' => "Votre url de l'image"
+                    'placeholder' => "Ajouter une image de votre appratement"
                 ],
                 'row_attr' => [
                     'class' => 'd-none',

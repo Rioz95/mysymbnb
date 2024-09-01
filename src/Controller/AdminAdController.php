@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Image;
 use App\Form\AdType;
 use App\Repository\AdRepository;
 use App\Service\PaginationService;
@@ -55,6 +56,26 @@ class AdminAdController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //On récupère les images transmise
+            $images = $form->get('images')->getData();
+
+            //ON boucle sur les images
+            foreach ($images as $image) {
+                // On génère un noveau nom de fichier
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+
+                //On copie le fichier dans le dossier uploads
+                $image->move(
+                    $this->getParameter('imagesAnnonceDestination'),
+                    $fichier
+                );
+
+                //On stock l'image dans la base de donner
+                $img = new Image();
+                $img->setCaption($fichier);
+                $ad->addImage($img);
+            }
+
             $nouvauNomImage = $uploader->enregistreImage($form->get('imageFile')->getData(), $ad->getCoverImage());
 
             if ($nouvauNomImage != null) {
@@ -102,5 +123,31 @@ class AdminAdController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_ads_index');
+    }
+
+    /**
+     * Pemret de supprimer une image
+     * @Route("/delete-image/{id}", name="delete_image", methods={"DELETE"})
+     */
+    public function deleteImage($id, Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $image = $entityManager->getRepository(Image::class)->find($id);
+
+        if (!$image) {
+            return new Response(json_encode(['success' => false, 'message' => 'Image non trouvée.']), 404, ['Content-Type' => 'application/json']);
+        }
+
+        // Vérifiez le token CSRF
+        $token = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete' . $id, $token)) {
+            return new Response(json_encode(['success' => false, 'message' => 'Jeton CSRF invalide.']), 400, ['Content-Type' => 'application/json']);
+        }
+
+        // Supprimez l'image
+        $entityManager->remove($image);
+        $entityManager->flush();
+
+        return new Response(json_encode(['success' => true]), 200, ['Content-Type' => 'application/json']);
     }
 }

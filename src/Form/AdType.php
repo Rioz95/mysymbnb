@@ -50,10 +50,16 @@ class AdType extends ApplicationType
             ->add('content', TextareaType::class,  $this->getConfiguration('Description dataillée', 'Taper une description qui donne vraiment envie de venir chez vous !'))
             ->add('rooms', IntegerType::class, $this->getConfiguration("Nombre de chambre", "Le nombre de chambre disponibles"))
             ->add('price', MoneyType::class,  $this->getConfiguration('Prix par nuit', 'Indiquer le prix que vous voulez pour une nuit'))
-            ->add('images', CollectionType::class, [
+            /* ->add('images', CollectionType::class, [
                 'entry_type' => ImageType::class,
                 'allow_add' => true,
-                'allow_delete' => true
+                'allow_delete' => true,
+            ]) */
+            ->add('images', FileType::class, [
+                'label' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false
             ]);
     }
 

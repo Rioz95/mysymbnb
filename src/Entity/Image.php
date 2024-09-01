@@ -25,7 +25,7 @@ class Image
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $url;
+    /* private $url; */
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -43,7 +43,7 @@ class Image
         return $this->id;
     }
 
-    public function getUrl(): ?string
+    /*  public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -53,7 +53,7 @@ class Image
         $this->url = $url;
 
         return $this;
-    }
+    } */
 
     public function getCaption(): ?string
     {

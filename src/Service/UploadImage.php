@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Image;
 use App\Service\UploadFichierInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;

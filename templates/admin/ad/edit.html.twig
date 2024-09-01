@@ -29,6 +29,14 @@
 						{{ form_row(form.images) }}
 
 
+						<h2>Images</h2>
+						{% for image in ad.images %}
+							<div class="image-container my-5" data-image-id="{{ image.id }}" data-csrf-token="{{ csrf_token('delete' ~ image.id) }}">
+								<img src="{{ asset('images/annonce/' ~ image.caption) }}" alt="Image de l'annonce {{ ad.title }}" width="200">
+								<button type="button" class="btn btn-danger delete-image">X</button>
+							</div>
+						{% endfor %}
+
 						<div>
 							<img src="{{asset("images/annonce/" ~ form.coverImage.vars.value)}}" alt="" id="imageAffichee" class="ronded mx-auto img-thumbnail" style="display: block">
 						</div>
@@ -120,6 +128,37 @@ $(target).remove();
 // const target = this.data('target');
 })
 })
+		</script>
+
+		<script>
+			$(document).ready(function () {
+$('.delete-image').click(function () {
+var button = $(this);
+var imageContainer = button.closest('.image-container');
+var imageId = imageContainer.data('image-id');
+var csrfToken = imageContainer.data('csrf-token');
+
+if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+$.ajax({
+url: '/delete-image/' + imageId,
+type: 'DELETE',
+data: {
+_token: csrfToken
+},
+success: function (response) {
+if (response.success) {
+imageContainer.remove();
+} else {
+alert('Erreur lors de la suppression de l\'image : ' + response.message);
+}
+},
+error: function (xhr, status, error) {
+alert('Erreur lors de la suppression de l\'image : ' + xhr.responseText);
+}
+});
+}
+});
+});
 		</script>
 	{% endblock %}
 

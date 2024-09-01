@@ -41,11 +41,16 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			<button type="boutton" id="add-image" class="btn btn-primary my-4">Ajouter une image</button>
-		</div>
-		<button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+		{# <div class="form-group">	<button type="boutton" id="add-image" class="btn btn-primary my-4">Ajouter une image</button> </div> #}
 
+		<h2>Images</h2>
+		{% for image in ad.images %}
+			<div class="image-container my-5" data-image-id="{{ image.id }}" data-csrf-token="{{ csrf_token('delete' ~ image.id) }}">
+				<img src="{{ asset('images/annonce/' ~ image.caption) }}" alt="Image de l'annonce {{ ad.title }}" width="200">
+				<button type="button" class="btn btn-danger delete-image">X</button>
+			</div>
+		{% endfor %}
+		<button type="submit" class="btn btn-primary">Confirmer l'enregistrement</button>
 		{{ form_end(form) }}
 
 	</div>
@@ -55,4 +60,37 @@
 	<script src="{{asset("js/gestionUpload.js")}}" defer></script>
 
 	<script src="/js/ad.js"></script>
+
+	<script>
+		$(document).ready(function () {
+$('.delete-image').click(function () {
+var button = $(this);
+var imageContainer = button.closest('.image-container');
+var imageId = imageContainer.data('image-id');
+var csrfToken = imageContainer.data('csrf-token');
+
+if (confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
+$.ajax({
+url: '/delete-image/' + imageId,
+type: 'DELETE',
+data: {
+_token: csrfToken
+},
+success: function (response) {
+if (response.success) {
+imageContainer.remove();
+} else {
+alert('Erreur lors de la suppression de l\'image : ' + response.message);
+}
+},
+error: function (xhr, status, error) {
+alert('Erreur lors de la suppression de l\'image : ' + xhr.responseText);
+}
+});
+}
+});
+});
+	</script>
+
+
 {% endblock %}
